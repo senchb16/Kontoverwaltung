@@ -4,20 +4,25 @@
  * and open the template in the editor.
  */
 package GUI;
-import Account.Account;
+import Account.Konto;
+import BL.KontoBenutzer;
+import BL.UserModel;
+import javax.swing.JOptionPane;
 
 /**
  *
  * @author Christoph
  */
-public class AccountGUI extends javax.swing.JFrame {
-   Account account;
+public class KontoGUI extends javax.swing.JFrame {
+   Konto account;
+   UserModel list = new UserModel();
     /**
      * Creates new form AccountGUI
      */
-    public AccountGUI() {
+    public KontoGUI() {
         initComponents();
-        account = new Account(50);
+        account = new Konto(50);
+        this.liUser.setModel(list);
         update();
     }
 
@@ -32,6 +37,9 @@ public class AccountGUI extends javax.swing.JFrame {
 
         jScrollPane2 = new javax.swing.JScrollPane();
         jTextArea1 = new javax.swing.JTextArea();
+        jPopupMenu1 = new javax.swing.JPopupMenu();
+        liAdd = new javax.swing.JMenuItem();
+        liStart = new javax.swing.JMenuItem();
         jPanel1 = new javax.swing.JPanel();
         lbBalance = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
@@ -45,6 +53,17 @@ public class AccountGUI extends javax.swing.JFrame {
         jTextArea1.setRows(5);
         jScrollPane2.setViewportView(jTextArea1);
 
+        liAdd.setText("add user");
+        liAdd.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                liAddActionPerformed(evt);
+            }
+        });
+        jPopupMenu1.add(liAdd);
+
+        liStart.setText("start");
+        jPopupMenu1.add(liStart);
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createEtchedBorder(), "Balance"));
@@ -56,8 +75,8 @@ public class AccountGUI extends javax.swing.JFrame {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(lbBalance, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap()
+                .addComponent(lbBalance, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -68,6 +87,7 @@ public class AccountGUI extends javax.swing.JFrame {
 
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createEtchedBorder(), "User"));
 
+        liUser.setComponentPopupMenu(jPopupMenu1);
         jScrollPane1.setViewportView(liUser);
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
@@ -127,6 +147,12 @@ public class AccountGUI extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void liAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_liAddActionPerformed
+       String name = JOptionPane.showInputDialog("Name of user: ");
+       KontoBenutzer u = new KontoBenutzer(name);
+       list.add(u);
+    }//GEN-LAST:event_liAddActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -144,20 +170,21 @@ public class AccountGUI extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(AccountGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(KontoGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(AccountGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(KontoGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(AccountGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(KontoGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(AccountGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(KontoGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new AccountGUI().setVisible(true);
+                new KontoGUI().setVisible(true);
             }
         });
     }
@@ -166,12 +193,15 @@ public class AccountGUI extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
+    private javax.swing.JPopupMenu jPopupMenu1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTextArea jTextArea1;
     private javax.swing.JTextArea jTextArea2;
     private javax.swing.JLabel lbBalance;
+    private javax.swing.JMenuItem liAdd;
+    private javax.swing.JMenuItem liStart;
     private javax.swing.JList<String> liUser;
     // End of variables declaration//GEN-END:variables
 

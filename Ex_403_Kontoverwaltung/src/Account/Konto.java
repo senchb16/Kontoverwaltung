@@ -9,10 +9,10 @@ package Account;
  *
  * @author Christoph
  */
-public class Account {
+public class Konto {
     private int balance;
 
-    public Account(int balance) {
+    public Konto(int balance) {
         this.balance = balance;
     }
     
