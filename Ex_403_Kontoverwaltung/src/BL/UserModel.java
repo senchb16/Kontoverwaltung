@@ -18,10 +18,11 @@ public class UserModel extends AbstractListModel {
     @Override
     public int getSize() {
         return user.size();
+        
     }
 
     @Override
-    public Object getElementAt(int i) {
+    public KontoBenutzer getElementAt(int i) {
         return user.get(i);
     }
     

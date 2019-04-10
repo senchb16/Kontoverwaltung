@@ -5,23 +5,36 @@
  */
 package Account;
 
+import javax.swing.JLabel;
+import javax.swing.JTextArea;
+
 /**
  *
  * @author Christoph
  */
 public class Konto {
     private int balance;
-
-    public Konto(int balance) {
+    private JLabel balanceLabel;
+    private JTextArea logOutput;
+    
+    public Konto(int balance, JLabel balanceLabel,JTextArea logOutput) {
         this.balance = balance;
+        this.balanceLabel = balanceLabel;
+        this.logOutput = logOutput;
     }
     
-    public void withdraw(int value){
+    public synchronized int withdraw(int value, String name)throws InterruptedException{
+        while(value > balance){
+            wait();
+        }
         this.balance-=value;
+        return balance;
     }
     
-    public void deposit(int value){
+    public synchronized int deposit(int value, String name){
         this.balance+=value;
+        return balance;
+        
     }
     
     public int getBalance(){

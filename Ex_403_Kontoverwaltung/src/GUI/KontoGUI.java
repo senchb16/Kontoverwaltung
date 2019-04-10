@@ -7,6 +7,9 @@ package GUI;
 import Account.Konto;
 import BL.KontoBenutzer;
 import BL.UserModel;
+import java.awt.Color;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 /**
@@ -14,16 +17,17 @@ import javax.swing.JOptionPane;
  * @author Christoph
  */
 public class KontoGUI extends javax.swing.JFrame {
-   Konto account;
+   Konto account = null;
    UserModel list = new UserModel();
     /**
      * Creates new form AccountGUI
      */
     public KontoGUI() {
         initComponents();
-        account = new Konto(50);
+        account = new Konto(50,this.lbBalance,this.taOutput);
+        updateBalance(account.getBalance());
         this.liUser.setModel(list);
-        update();
+        
     }
 
     /**
@@ -37,9 +41,11 @@ public class KontoGUI extends javax.swing.JFrame {
 
         jScrollPane2 = new javax.swing.JScrollPane();
         jTextArea1 = new javax.swing.JTextArea();
-        jPopupMenu1 = new javax.swing.JPopupMenu();
+        pmStart = new javax.swing.JPopupMenu();
         liAdd = new javax.swing.JMenuItem();
         liStart = new javax.swing.JMenuItem();
+        pmAddAccount = new javax.swing.JPopupMenu();
+        add = new javax.swing.JMenuItem();
         jPanel1 = new javax.swing.JPanel();
         lbBalance = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
@@ -47,7 +53,7 @@ public class KontoGUI extends javax.swing.JFrame {
         liUser = new javax.swing.JList<>();
         jPanel3 = new javax.swing.JPanel();
         jScrollPane3 = new javax.swing.JScrollPane();
-        jTextArea2 = new javax.swing.JTextArea();
+        taOutput = new javax.swing.JTextArea();
 
         jTextArea1.setColumns(20);
         jTextArea1.setRows(5);
@@ -59,16 +65,30 @@ public class KontoGUI extends javax.swing.JFrame {
                 liAddActionPerformed(evt);
             }
         });
-        jPopupMenu1.add(liAdd);
+        pmStart.add(liAdd);
 
         liStart.setText("start");
-        jPopupMenu1.add(liStart);
+        liStart.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                liStartActionPerformed(evt);
+            }
+        });
+        pmStart.add(liStart);
+
+        add.setText("add Account");
+        add.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                addActionPerformed(evt);
+            }
+        });
+        pmAddAccount.add(add);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createEtchedBorder(), "Balance"));
 
         lbBalance.setFont(new java.awt.Font("Century Gothic", 0, 24)); // NOI18N
+        lbBalance.setOpaque(true);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -87,7 +107,9 @@ public class KontoGUI extends javax.swing.JFrame {
 
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createEtchedBorder(), "User"));
 
-        liUser.setComponentPopupMenu(jPopupMenu1);
+        liUser.setComponentPopupMenu(pmStart);
+        liUser.setSelectionBackground(new java.awt.Color(255, 255, 204));
+        liUser.setSelectionForeground(new java.awt.Color(51, 51, 51));
         jScrollPane1.setViewportView(liUser);
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
@@ -103,9 +125,11 @@ public class KontoGUI extends javax.swing.JFrame {
 
         jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createEtchedBorder(), "Log-Output"));
 
-        jTextArea2.setColumns(20);
-        jTextArea2.setRows(5);
-        jScrollPane3.setViewportView(jTextArea2);
+        taOutput.setEditable(false);
+        taOutput.setColumns(20);
+        taOutput.setRows(5);
+        taOutput.setComponentPopupMenu(pmAddAccount);
+        jScrollPane3.setViewportView(taOutput);
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -149,9 +173,30 @@ public class KontoGUI extends javax.swing.JFrame {
 
     private void liAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_liAddActionPerformed
        String name = JOptionPane.showInputDialog("Name of user: ");
-       KontoBenutzer u = new KontoBenutzer(name);
+       if(name.equals("")){
+           try {
+               throw new Exception("You have to indicate a name");
+           } catch (Exception ex) {
+               JOptionPane.showMessageDialog(null, ex.getMessage());
+               
+           }
+       }
+       KontoBenutzer u = new KontoBenutzer(name,account,this);
        list.add(u);
     }//GEN-LAST:event_liAddActionPerformed
+
+    private void liStartActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_liStartActionPerformed
+     int[] idcs = this.liUser.getSelectedIndices();
+        for (int i : idcs) {
+            list.getElementAt(i).run();
+        }
+    }//GEN-LAST:event_liStartActionPerformed
+
+    private void addActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addActionPerformed
+        account = new Konto(50,this.lbBalance,this.taOutput);
+        
+        updateBalance(account.getBalance());
+    }//GEN-LAST:event_addActionPerformed
 
     /**
      * @param args the command line arguments
@@ -190,23 +235,40 @@ public class KontoGUI extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JMenuItem add;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
-    private javax.swing.JPopupMenu jPopupMenu1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTextArea jTextArea1;
-    private javax.swing.JTextArea jTextArea2;
     private javax.swing.JLabel lbBalance;
     private javax.swing.JMenuItem liAdd;
     private javax.swing.JMenuItem liStart;
     private javax.swing.JList<String> liUser;
+    private javax.swing.JPopupMenu pmAddAccount;
+    private javax.swing.JPopupMenu pmStart;
+    private javax.swing.JTextArea taOutput;
     // End of variables declaration//GEN-END:variables
 
-    private void update() {
-        double balance = account.getBalance();
-        this.lbBalance.setText(String.format("%.2f €",balance));
+    public void updateBalance(double balance) {
+         this.lbBalance.setText(String.format("%.2f €",balance));
     }
+
+    public void updateWithdrawed(int balance, int value, String name) {
+        this.taOutput.append(String.format("%s withdrawed %.2f € \n", name,(double)value));
+        this.lbBalance.setText(String.format("%.2f €",(double)balance));
+        
+        
+        
+    }
+
+    public void updateDeposited(int balance, int value, String name) {
+        this.taOutput.append(String.format("%s deposited %.2f € \n", name,(double)value));
+        this.lbBalance.setText(String.format("%.2f",(double)balance));
+        
+    }
+    
+    
 }
