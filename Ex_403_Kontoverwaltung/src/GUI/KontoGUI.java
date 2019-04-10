@@ -24,7 +24,7 @@ public class KontoGUI extends javax.swing.JFrame {
      */
     public KontoGUI() {
         initComponents();
-        account = new Konto(50,this.lbBalance,this.taOutput);
+        account = new Konto(500);
         updateBalance(account.getBalance());
         this.liUser.setModel(list);
         
@@ -193,7 +193,7 @@ public class KontoGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_liStartActionPerformed
 
     private void addActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addActionPerformed
-        account = new Konto(50,this.lbBalance,this.taOutput);
+        account = new Konto(500);
         
         updateBalance(account.getBalance());
     }//GEN-LAST:event_addActionPerformed

@@ -5,36 +5,43 @@
  */
 package Account;
 
+import java.util.Arrays;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
+import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
+import org.junit.runners.Parameterized.Parameter;
+import org.junit.runners.Parameterized.Parameters;
 
 /**
  *
  * @author Christoph
  */
+@RunWith(value=Parameterized.class)
 public class KontoTest {
     
-    public KontoTest() {
-    }
+    @Parameter(value = 0)
+    public int value;
     
-    @BeforeClass
-    public static void setUpClass() {
-    }
+    @Parameter(value = 1)
+    public int expectedWithdraw;
     
-    @AfterClass
-    public static void tearDownClass() {
-    }
+    @Parameter(value = 2)
+    public int expectedDeposit;
     
-    @Before
-    public void setUp() {
-    }
-    
-    @After
-    public void tearDown() {
+    @Parameters(name = "")
+    public static Iterable<Object[]>data1(){
+        return Arrays.asList(new Object[][]{
+            {34,466,534},
+            {49,451,549},
+            {20,480,520},
+            {44,456,544},
+            {17,483,517}
+        });
     }
 
     /**
@@ -43,14 +50,14 @@ public class KontoTest {
     @Test
     public void testWithdraw() throws Exception {
         System.out.println("withdraw");
-        int value = 0;
-        String name = "";
-        Konto instance = null;
-        int expResult = 0;
-        int result = instance.withdraw(value, name);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        int value = this.value;
+        
+        Konto instance = new Konto(500);
+        
+        int result = instance.withdraw(value);
+        assertEquals(expectedWithdraw, result);
+        
+        
     }
 
     /**
@@ -59,28 +66,27 @@ public class KontoTest {
     @Test
     public void testDeposit() {
         System.out.println("deposit");
-        int value = 0;
-        String name = "";
-        Konto instance = null;
-        int expResult = 0;
-        int result = instance.deposit(value, name);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        int value = this.value;
+        
+        Konto instance = new Konto(500);
+        
+        int result = instance.deposit(value);
+        assertEquals(expectedDeposit, result);
+       
     }
 
-    /**
-     * Test of getBalance method, of class Konto.
-     */
-    @Test
-    public void testGetBalance() {
-        System.out.println("getBalance");
-        Konto instance = null;
-        int expResult = 0;
-        int result = instance.getBalance();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
+//    /**
+//     * Test of getBalance method, of class Konto.
+//     */
+//    @Test
+//    public void testGetBalance() {
+//        System.out.println("getBalance");
+//        Konto instance = null;
+//        int expResult = 0;
+//        int result = instance.getBalance();
+//        assertEquals(expResult, result);
+//        // TODO review the generated test code and remove the default call to fail.
+//        fail("The test case is a prototype.");
+//    }
     
 }

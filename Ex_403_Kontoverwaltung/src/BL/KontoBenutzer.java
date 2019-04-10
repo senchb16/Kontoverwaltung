@@ -33,16 +33,11 @@ public class KontoBenutzer implements Runnable {
     public void run() {
         Random rand = new Random();
         for (int i = 0; i < 10; i++) {
-            try {
-                Thread.sleep(100);
-            } catch (InterruptedException ex) {
-                Logger.getLogger(KontoBenutzer.class.getName()).log(Level.SEVERE, null, ex);
-            }
             int value = rand.nextInt(49-10+1)+10;
             if(rand.nextBoolean()){
                 try {
                   
-                    int balance= konto.withdraw(value,name);
+                    int balance= konto.withdraw(value);
                     this.gui.updateWithdrawed(balance,value,name);
                
                 } catch (InterruptedException ex) {
@@ -51,7 +46,7 @@ public class KontoBenutzer implements Runnable {
                 }
                 else{
                   
-                    int balance= konto.deposit(value,name);
+                    int balance= konto.deposit(value);
                     this.gui.updateDeposited(balance,value,name);
                 
                 }

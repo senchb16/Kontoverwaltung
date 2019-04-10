@@ -14,16 +14,14 @@ import javax.swing.JTextArea;
  */
 public class Konto {
     private int balance;
-    private JLabel balanceLabel;
-    private JTextArea logOutput;
     
-    public Konto(int balance, JLabel balanceLabel,JTextArea logOutput) {
+    
+    public Konto(int balance) {
         this.balance = balance;
-        this.balanceLabel = balanceLabel;
-        this.logOutput = logOutput;
+        
     }
     
-    public synchronized int withdraw(int value, String name)throws InterruptedException{
+    public synchronized int withdraw(int value)throws InterruptedException{
         while(value > balance){
             wait();
         }
@@ -31,7 +29,7 @@ public class Konto {
         return balance;
     }
     
-    public synchronized int deposit(int value, String name){
+    public synchronized int deposit(int value){
         this.balance+=value;
         return balance;
         
